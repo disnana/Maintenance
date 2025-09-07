@@ -164,8 +164,11 @@
                 try {
                     const url = new URL(decodeURIComponent(originalUrl), window.location.origin);
         
-                    // disnana.com サブドメインだけ許可
-                    if (url.hostname.endsWith('.disnana.com')) {
+                    // ホスト名を正確にチェック
+                    if (
+                        url.hostname === 'disnana.com' ||
+                        url.hostname.endsWith('.disnana.com')
+                    ) {
                         window.location.href = url.href;
                     } else {
                         console.error('Invalid redirect target:', url.href);
@@ -177,7 +180,6 @@
                 }
             };
         }
-
 
         // Add floating animation to main content
         document.querySelector('.fade-in').classList.add('float');
