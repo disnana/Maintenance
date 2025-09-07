@@ -158,14 +158,26 @@
         const urlParams = new URLSearchParams(window.location.search);
         const originalUrl = urlParams.get('url');
         const reloadButton = document.getElementById('reloadButton');
-
+        
         if (originalUrl) {
             reloadButton.onclick = function() {
-                window.location.href = decodeURIComponent(originalUrl);
+                try {
+                    const url = new URL(decodeURIComponent(originalUrl), window.location.origin);
+        
+                    // disnana.com サブドメインだけ許可
+                    if (url.hostname.endsWith('.disnana.com')) {
+                        window.location.href = url.href;
+                    } else {
+                        console.error('Invalid redirect target:', url.href);
+                        alert('このURLには移動できません');
+                    }
+                } catch (e) {
+                    console.error('Invalid URL:', e);
+                    alert('不正なURLです');
+                }
             };
-        } else {
-            reloadButton.style.display = 'none';
         }
+
 
         // Add floating animation to main content
         document.querySelector('.fade-in').classList.add('float');
